@@ -1,4 +1,4 @@
-import { Command, copy, ensureDir, exists, HelpCommand } from "./deps.ts";
+import { Command, copy, ensureDir, exists } from "./deps.ts";
 
 const TEMPLATES_DIR = `${
   Deno.env.get("USERPROFILE")

@@ -1,3 +1,3 @@
 # Tortitas C# Template
 
-This is a template generated with [tortitast/prod](https://github.com/tortitast/prod) cli tool.
+This is a template generated with [tortitast/prot](https://github.com/tortitast/prot) cli tool.
