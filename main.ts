@@ -4,6 +4,15 @@ const TEMPLATES_DIR = `${
   Deno.env.get("USERPROFILE")
 }\\AppData\\Roaming\\Tortitas\\prot\\templates`;
 
+/* const ASCII_TEAPOT = `
+              ;,'
+     _o_    ;:;'
+ ,-.'---`.__ ;
+((j`=====',-'
+ `-\     /
+    `-=-'     hjw
+` */
+
 if (!(await exists(TEMPLATES_DIR))) {
   await ensureDir(TEMPLATES_DIR);
 
