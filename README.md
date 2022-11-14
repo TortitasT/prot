@@ -15,6 +15,7 @@ Requires Denoland to be installed.
 git clone https://github.com/tortitast/prot.git
 cd prot
 deno install --allow-env --allow-read --allow-write -f .\main.ts
+prot sync
 ```
 
 ## Templates

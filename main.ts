@@ -13,16 +13,16 @@ const ASCII_TEAPOT = `%c
     \`-=-'     hjw
 `;
 
-if (!(await exists(TEMPLATES_DIR))) {
-  await ensureDir(TEMPLATES_DIR);
+// if (!(await exists(TEMPLATES_DIR))) {
+//   await ensureDir(TEMPLATES_DIR);
 
-  console.log("%cInstalling templates...", "color: blue");
+//   console.log("%cInstalling templates...", "color: blue");
 
-  await copy(
-    "./templates",
-    TEMPLATES_DIR,
-  );
-}
+//   await copy(
+//     "./templates",
+//     TEMPLATES_DIR,
+//   );
+// }
 
 if (import.meta.main) {
   await new Command()
@@ -32,6 +32,22 @@ if (import.meta.main) {
     .action(() => {
       console.info("❓ %cNo command specified, try --help", "color: yellow");
     })
+    .command(
+      "sync",
+      new Command()
+        .description("Sync templates")
+        .action(async () => {
+          console.log("%cSyncing templates...", "color: blue");
+
+          await ensureDir(TEMPLATES_DIR);
+
+          await copy(
+            "./templates",
+            TEMPLATES_DIR,
+            { overwrite: true },
+          );
+        }),
+    )
     .command(
       "new",
       new Command()
@@ -43,8 +59,6 @@ if (import.meta.main) {
             Deno.exit(1);
           }
 
-          await Deno.mkdirSync(name);
-
           const selectedTemplate = template || "default";
 
           if (!await exists(`${TEMPLATES_DIR}/${selectedTemplate}`)) {
@@ -54,6 +68,8 @@ if (import.meta.main) {
             );
             Deno.exit(1);
           }
+
+          await Deno.mkdirSync(name);
 
           await copy(
             `${TEMPLATES_DIR}/${selectedTemplate}`,
