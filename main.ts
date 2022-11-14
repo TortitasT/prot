@@ -27,7 +27,7 @@ if (!(await exists(TEMPLATES_DIR))) {
 if (import.meta.main) {
   await new Command()
     .name("prot")
-    .version("0.1.0")
+    .version("0.1.1")
     .description("Project template generator")
     .action(() => {
       console.info("❓ %cNo command specified, try --help", "color: yellow");
