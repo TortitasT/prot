@@ -4,19 +4,19 @@ const TEMPLATES_DIR = `${
   Deno.env.get("USERPROFILE")
 }\\AppData\\Roaming\\Tortitas\\prot\\templates`;
 
-/* const ASCII_TEAPOT = `
+const ASCII_TEAPOT = `%c
               ;,'
      _o_    ;:;'
- ,-.'---`.__ ;
-((j`=====',-'
- `-\     /
-    `-=-'     hjw
-` */
+ ,-.'---\`.__ ;
+((j\`=====',-'
+ \`-\     /
+    \`-=-'     hjw
+`;
 
 if (!(await exists(TEMPLATES_DIR))) {
   await ensureDir(TEMPLATES_DIR);
 
-  console.log("Installing templates...");
+  console.log("%cInstalling templates...", "color: blue");
 
   await copy(
     "./templates",
@@ -30,7 +30,7 @@ if (import.meta.main) {
     .version("0.1.0")
     .description("Project template generator")
     .action(() => {
-      console.info("No command specified, try --help");
+      console.info("❓ %cNo command specified, try --help", "color: yellow");
     })
     .command(
       "new",
@@ -38,13 +38,8 @@ if (import.meta.main) {
         .description("Create a new project")
         .arguments("<name:string> [template:string]")
         .action(async (_options, name: string, template?: string, ...args) => {
-          if (name == "test") {
-            console.log(TEMPLATES_DIR);
-            Deno.exit(0);
-          }
-
           if (await exists(name)) {
-            console.error(`Directory ${name} already exists`);
+            console.error(`❌ %cDirectory ${name} already exists`, "color: red");
             Deno.exit(1);
           }
 
@@ -53,7 +48,10 @@ if (import.meta.main) {
           const selectedTemplate = template || "default";
 
           if (!await exists(`${TEMPLATES_DIR}/${selectedTemplate}`)) {
-            console.error(`Template ${selectedTemplate} does not exist`);
+            console.error(
+              `❌ %cTemplate ${selectedTemplate} does not exist`,
+              "color: red",
+            );
             Deno.exit(1);
           }
 
@@ -63,8 +61,10 @@ if (import.meta.main) {
             { overwrite: true },
           );
 
+          console.info(ASCII_TEAPOT, "color: blue");
           console.info(
-            `Project ${name} created with template ${selectedTemplate}`,
+            `✅ %cProject ${name} successfully created with template ${selectedTemplate}`,
+            "color: green;",
           );
 
           Deno.exit(0);

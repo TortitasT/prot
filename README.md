@@ -14,7 +14,7 @@ Requires Denoland to be installed.
 ```powershell
 git clone https://github.com/tortitast/prot.git
 cd prot
-deno install --allow-all -f .\main.ts
+deno install --allow-env --allow-read --allow-write -f .\main.ts
 ```
 
 ## Templates
