@@ -33,11 +33,54 @@ const ASCII_TEAPOT = `%c
 if (import.meta.main) {
   await new Command()
     .name("prot")
-    .version("0.3.0")
+    .version("0.3.1")
     .description("Project template generator")
     .action(() => {
       console.info("❓ %cNo command specified, try --help", "color: yellow");
     })
+    .command(
+      "list",
+      new Command()
+        .description("List available templates")
+        .action(async () => {
+          const templates = await Deno.readDir(TEMPLATES_DIR);
+          console.info("📁 %cAvailable templates:", "color: yellow");
+          for await (const template of templates) {
+            console.info(
+              "  %c%s",
+              "color: blue",
+              template.name.split(".")[0],
+            );
+          }
+        }),
+    )
+    .command(
+      "directory",
+      new Command()
+        .description("Show and open templates directory in file explorer")
+        .action(async () => {
+          console.info("📁 %cCurrent templates directory is:", "color: yellow");
+          console.info("  %c%s", "color: blue", TEMPLATES_DIR);
+
+          if (Deno.build.os === "windows") {
+            await Deno.run({
+              cmd: ["explorer", TEMPLATES_DIR],
+            }).status();
+          }
+
+          if (Deno.build.os === "linux") {
+            await Deno.run({
+              cmd: ["xdg-open", TEMPLATES_DIR],
+            }).status();
+          }
+
+          if (Deno.build.os === "darwin") {
+            await Deno.run({
+              cmd: ["open", TEMPLATES_DIR],
+            }).status();
+          }
+        }),
+    )
     .command(
       "sync",
       new Command()
