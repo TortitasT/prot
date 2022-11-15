@@ -26,7 +26,7 @@ const ASCII_TEAPOT = `%c
 if (import.meta.main) {
   await new Command()
     .name("prot")
-    .version("0.1.1")
+    .version("0.2.0")
     .description("Project template generator")
     .action(() => {
       console.info("❓ %cNo command specified, try --help", "color: yellow");
