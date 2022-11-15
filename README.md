@@ -43,3 +43,5 @@ To add a template create a folder with the name of the template and the files in
 ```bash
 ~/Library/Application Support/Tortitas/prot/templates
 ```
+
+Use %%name%% to replace with the name of the project.

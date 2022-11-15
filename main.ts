@@ -85,6 +85,19 @@ if (import.meta.main) {
               { overwrite: true },
             );
 
+            for await (const dirEntry of Deno.readDir(name)) {
+              if (dirEntry.isFile) {
+                const fileContent = await Deno.readTextFile(
+                  `${name}/${dirEntry.name}`,
+                );
+
+                await Deno.writeTextFile(
+                  `${name}/${dirEntry.name}`,
+                  fileContent.replaceAll("%%name%%", name),
+                );
+              }
+            }
+
             console.info(ASCII_TEAPOT, "color: blue");
             console.info(
               `✅ %cProject ${name} successfully created with template ${selectedTemplate}`,
