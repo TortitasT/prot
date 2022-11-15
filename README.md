@@ -18,7 +18,7 @@ deno install --allow-env --allow-read --allow-write --allow-run -f main.ts
 prot sync
 ```
 
-### !!! On mac
+### On mac (maybe on linux too, haven't tried)
 
 Add this line to your shell .rc file (e.g. ~/.bashrc, ~/.zshrc, ~/.config/fish/config.fish)
 ```bash
@@ -27,7 +27,7 @@ export PATH="/Users/vgf/.deno/bin:$PATH"
 
 ## Templates
 
-To add a template create a folder with the name of the template and the files inside.
+To add a template create a .zip in the following directory with the name of the template and the files inside.
 
 - Windows
 ```powershell
@@ -44,4 +44,5 @@ To add a template create a folder with the name of the template and the files in
 ~/Library/Application Support/Tortitas/prot/templates
 ```
 
-Use %%name%% to replace with the name of the project.
+### %%name%%
+%%name%% will be automatically replaced with the name of the project.
