@@ -1,4 +1,11 @@
-import { Command, copy, ensureDir, exists } from "./deps.ts";
+import {
+  Command,
+  compress,
+  copy,
+  decompress,
+  ensureDir,
+  exists,
+} from "./deps.ts";
 
 const ALL_TEMPLATES_DIR = {
   windows: `${
@@ -26,7 +33,7 @@ const ASCII_TEAPOT = `%c
 if (import.meta.main) {
   await new Command()
     .name("prot")
-    .version("0.2.0")
+    .version("0.3.0")
     .description("Project template generator")
     .action(() => {
       console.info("❓ %cNo command specified, try --help", "color: yellow");
@@ -40,11 +47,23 @@ if (import.meta.main) {
 
           await ensureDir(TEMPLATES_DIR);
 
-          await copy(
-            "./templates",
-            TEMPLATES_DIR,
-            { overwrite: true },
-          );
+          const templates = await Deno.readDir("./templates");
+
+          for await (const template of templates) {
+            await compress(
+              `./templates/${template.name}/*`,
+              `${TEMPLATES_DIR}/${template.name}.zip`,
+              {
+                overwrite: true,
+              },
+            );
+          }
+
+          // await copy(
+          //   "./templates",
+          //   TEMPLATES_DIR,
+          //   { overwrite: true },
+          // );
         }),
     )
     .command(
@@ -69,7 +88,7 @@ if (import.meta.main) {
 
             const selectedTemplate = template || "default";
 
-            if (!await exists(`${TEMPLATES_DIR}/${selectedTemplate}`)) {
+            if (!await exists(`${TEMPLATES_DIR}/${selectedTemplate}.zip`)) {
               console.error(
                 `❌ %cTemplate ${selectedTemplate} does not exist`,
                 "color: red",
@@ -79,8 +98,14 @@ if (import.meta.main) {
 
             await Deno.mkdirSync(name);
 
-            await copy(
-              `${TEMPLATES_DIR}/${selectedTemplate}`,
+            // await copy(
+            //   `${TEMPLATES_DIR}/${selectedTemplate}`,
+            //   `${name}`,
+            //   { overwrite: true },
+            // );
+
+            await decompress(
+              `${TEMPLATES_DIR}/${selectedTemplate}.zip`,
               `${name}`,
               { overwrite: true },
             );

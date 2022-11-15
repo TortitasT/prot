@@ -14,7 +14,7 @@ Requires Deno to be installed.
 ```powershell
 git clone https://github.com/tortitast/prot.git
 cd prot
-deno install --allow-env --allow-read --allow-write -f main.ts
+deno install --allow-env --allow-read --allow-write --allow-run -f main.ts
 prot sync
 ```
 
