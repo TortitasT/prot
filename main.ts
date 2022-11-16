@@ -1,11 +1,4 @@
-import {
-  Command,
-  compress,
-  copy,
-  decompress,
-  ensureDir,
-  exists,
-} from "./deps.ts";
+import { Command, compress, decompress, ensureDir, exists } from "./deps.ts";
 
 const ALL_TEMPLATES_DIR = {
   windows: `${
@@ -33,7 +26,7 @@ const ASCII_TEAPOT = `%c
 if (import.meta.main) {
   await new Command()
     .name("prot")
-    .version("0.3.2")
+    .version("0.3.3")
     .description("Project template generator")
     .action(() => {
       console.info("❓ %cNo command specified, try --help", "color: yellow");
@@ -93,13 +86,23 @@ if (import.meta.main) {
           const templates = await Deno.readDir("./templates");
 
           for await (const template of templates) {
-            await compress(
-              `./templates/${template.name}/*`,
-              `${TEMPLATES_DIR}/${template.name}.zip`,
-              {
-                overwrite: true,
-              },
-            );
+            Deno.chdir(`./templates/${template.name}`);
+
+            for await (
+              const file of Deno.readDir(
+                `./`,
+              )
+            ) {
+              await compress(
+                `./${file.name}`,
+                `${TEMPLATES_DIR}/${template.name}.zip`,
+                {
+                  overwrite: true,
+                },
+              );
+            }
+
+            Deno.chdir(`./../..`);
           }
 
           // await copy(
