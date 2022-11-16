@@ -26,7 +26,7 @@ const ASCII_TEAPOT = `%c
 if (import.meta.main) {
   await new Command()
     .name("prot")
-    .version("0.3.3")
+    .version("0.3.4")
     .description("Project template generator")
     .action(() => {
       console.info("❓ %cNo command specified, try --help", "color: yellow");
@@ -79,7 +79,7 @@ if (import.meta.main) {
       new Command()
         .description("Sync templates")
         .action(async () => {
-          console.log("%cSyncing templates...", "color: blue");
+          console.log("%c📰 Syncing templates...", "color: blue");
 
           await ensureDir(TEMPLATES_DIR);
 
@@ -87,6 +87,12 @@ if (import.meta.main) {
 
           for await (const template of templates) {
             Deno.chdir(`./templates/${template.name}`);
+
+            console.info(
+              "  %c📌 Importing %s...",
+              "color: yellow",
+              template.name,
+            );
 
             for await (
               const file of Deno.readDir(
