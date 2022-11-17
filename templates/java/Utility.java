@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Utility {
-    public static String SEPARATOR = "----------------------------------------";
+    public static final String SEPARATOR = "----------------------------------------";
 
     /**
      * Prompts the user for input with a message.
