@@ -26,7 +26,7 @@ const ASCII_TEAPOT = `%c
 if (import.meta.main) {
   await new Command()
     .name("prot")
-    .version("0.3.4")
+    .version("0.3.5")
     .description("Project template generator")
     .action(() => {
       console.info("❓ %cNo command specified, try --help", "color: yellow");
@@ -86,7 +86,7 @@ if (import.meta.main) {
           const templates = await Deno.readDir("./templates");
 
           for await (const template of templates) {
-            Deno.chdir(`./templates/${template.name}`);
+            const currentDir = `${Deno.cwd()}/templates/${template.name}`;
 
             console.info(
               "  %c📌 Importing %s...",
@@ -96,19 +96,17 @@ if (import.meta.main) {
 
             for await (
               const file of Deno.readDir(
-                `./`,
+                currentDir,
               )
             ) {
               await compress(
-                `./${file.name}`,
+                `${currentDir}/${file.name}`,
                 `${TEMPLATES_DIR}/${template.name}.zip`,
                 {
                   overwrite: true,
                 },
               );
             }
-
-            Deno.chdir(`./../..`);
           }
 
           // await copy(
@@ -156,9 +154,11 @@ if (import.meta.main) {
             //   { overwrite: true },
             // );
 
+            const projectFolder = Deno.cwd() + "/" + name;
+
             await decompress(
               `${TEMPLATES_DIR}/${selectedTemplate}.zip`,
-              `${name}`,
+              projectFolder,
               { overwrite: true },
             );
 
