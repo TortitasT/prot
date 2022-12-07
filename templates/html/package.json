@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "main": "main.js",
   "license": "MIT",
+  "packageManager": "yarn",
   "scripts": {
     "dev": "npm-run-all --parallel css start",
-    "build": "echo TODO",
-    "start": "node main.js",
-    "css": "node-sass -w assets/scss -o assets/css --recursive",
+    "build": "node _build.js",
+    "start": "nodemon -e htm main.js",
+    "css": "node-sass -w src/assets/scss -o src/assets/css --recursive",
     "watch": "nodemon -e scss -x 'npm run css'"
   },
   "dependencies": {
