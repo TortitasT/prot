@@ -7,3 +7,6 @@
 
 # Java
 out/
+
+# MAC
+*.DS_Store

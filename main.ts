@@ -26,7 +26,7 @@ const ASCII_TEAPOT = `%c
 if (import.meta.main) {
   await new Command()
     .name("prot")
-    .version("0.3.5")
+    .version("0.4.0")
     .description("Project template generator")
     .action(() => {
       console.info("❓ %cNo command specified, try --help", "color: yellow");
@@ -86,6 +86,10 @@ if (import.meta.main) {
           const templates = await Deno.readDir("./templates");
 
           for await (const template of templates) {
+            if (!template.isDirectory) {
+              continue;
+            }
+
             const currentDir = `${Deno.cwd()}/templates/${template.name}`;
 
             console.info(
@@ -93,6 +97,32 @@ if (import.meta.main) {
               "color: yellow",
               template.name,
             );
+
+            if (await exists(`${TEMPLATES_DIR}/${template.name}.zip`)) {
+              console.info(
+                "    %c🗑 Removing old template...",
+                "color: yellow",
+              );
+              await Deno.remove(`${TEMPLATES_DIR}/${template.name}.zip`);
+            }
+
+            if (await exists(`${currentDir}/.protignore`)) {
+              const ignoreFile = await Deno.readTextFile(
+                `${currentDir}/.protignore`,
+              );
+
+              const ignoreList = ignoreFile.split("\n").map((line) =>
+                line.replaceAll("/", "")
+              );
+
+              for await (const file of Deno.readDir(currentDir)) {
+                if (ignoreList.includes(file.name)) {
+                  await Deno.remove(`${currentDir}/${file.name}`, {
+                    recursive: true,
+                  });
+                }
+              }
+            }
 
             for await (
               const file of Deno.readDir(
